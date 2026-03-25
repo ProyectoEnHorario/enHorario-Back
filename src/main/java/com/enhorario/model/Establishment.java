@@ -97,7 +97,7 @@ public class Establishment {
     private LocalTime lowHourStart;
 
     @Column(name = "price_level")
-    private Integer priceLevel;
+    private Short priceLevel;
 
     @Column(name = "is_verified")
     private Boolean isVerified;

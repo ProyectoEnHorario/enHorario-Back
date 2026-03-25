@@ -35,7 +35,7 @@ public class EstablishmentDTO {
     private Integer averageWaitMinutes;
     private String peakHourStart;
     private String lowHourStart;
-    private Integer priceLevel;
+    private Short priceLevel;
     private Boolean isVerified;
     private Boolean isActive;
     private String createdAt;
