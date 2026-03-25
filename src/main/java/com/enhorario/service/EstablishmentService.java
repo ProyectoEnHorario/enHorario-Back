@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -71,21 +72,25 @@ public class EstablishmentService {
                 .latitude(establishment.getLatitude())
                 .longitude(establishment.getLongitude())
                 .status(establishment.getStatus().toString())
-                .openingTime(establishment.getOpeningTime())
-                .closingTime(establishment.getClosingTime())
+                .openingTime(formatTime(establishment.getOpeningTime()))
+                .closingTime(formatTime(establishment.getClosingTime()))
                 .websiteUrl(establishment.getWebsiteUrl())
                 .phone(establishment.getPhone())
                 .whatsappUrl(establishment.getWhatsappUrl())
                 .coverPhotoUrl(establishment.getCoverPhotoUrl())
                 .logoUrl(establishment.getLogoUrl())
                 .averageWaitMinutes(establishment.getAverageWaitMinutes())
-                .peakHourStart(establishment.getPeakHourStart())
-                .lowHourStart(establishment.getLowHourStart())
+                .peakHourStart(formatTime(establishment.getPeakHourStart()))
+                .lowHourStart(formatTime(establishment.getLowHourStart()))
                 .priceLevel(establishment.getPriceLevel())
                 .isVerified(establishment.getIsVerified())
                 .isActive(establishment.getIsActive())
                 .createdAt(establishment.getCreatedAt().toString())
                 .updatedAt(establishment.getUpdatedAt().toString())
                 .build();
+    }
+
+    private String formatTime(LocalTime time) {
+        return time != null ? time.toString() : null;
     }
 }

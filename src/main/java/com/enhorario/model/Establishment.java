@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.UUID;
 
 @Entity
@@ -65,10 +66,10 @@ public class Establishment {
     private EstablishmentStatus status;
 
     @Column(name = "opening_time")
-    private String openingTime;
+    private LocalTime openingTime;
 
     @Column(name = "closing_time")
-    private String closingTime;
+    private LocalTime closingTime;
 
     @Column(name = "website_url", columnDefinition = "TEXT")
     private String websiteUrl;
@@ -89,10 +90,10 @@ public class Establishment {
     private Integer averageWaitMinutes;
 
     @Column(name = "peak_hour_start")
-    private String peakHourStart;
+    private LocalTime peakHourStart;
 
     @Column(name = "low_hour_start")
-    private String lowHourStart;
+    private LocalTime lowHourStart;
 
     @Column(name = "price_level")
     private Integer priceLevel;
