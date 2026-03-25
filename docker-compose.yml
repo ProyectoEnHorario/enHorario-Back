@@ -1,0 +1,38 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: enhorario_db
+    environment:
+      POSTGRES_DB: enhorario
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - enhorario_network
+
+  backend:
+    build: .
+    container_name: enhorario_backend
+    environment:
+      DATABASE_URL: jdbc:postgresql://postgres:5432/enhorario
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SERVER_PORT: 8080
+      JWT_SECRET: your-secret-key-change-in-production-min-256-bits
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    networks:
+      - enhorario_network
+
+volumes:
+  postgres_data:
+
+networks:
+  enhorario_network:
+    driver: bridge
