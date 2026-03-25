@@ -19,6 +19,7 @@ EXPOSE 8080
 ENV DATABASE_URL=jdbc:postgresql://postgres:5432/enhorario \
     DB_USERNAME=postgres \
     DB_PASSWORD=postgres \
+    PORT=8080 \
     SERVER_PORT=8080 \
     JWT_SECRET=your-secret-key-change-in-production
 
