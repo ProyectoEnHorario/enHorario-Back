@@ -98,11 +98,11 @@ public class TurnService {
         turn.setStatus(status);
 
         if (status == Turn.TurnStatus.CALLED) {
-            turn.setCalledAt(java.time.LocalDateTime.now());
+            turn.setCalledAt(java.time.OffsetDateTime.now(java.time.ZoneOffset.UTC));
         } else if (status == Turn.TurnStatus.ATTENDED) {
-            turn.setAttendedAt(java.time.LocalDateTime.now());
+            turn.setAttendedAt(java.time.OffsetDateTime.now(java.time.ZoneOffset.UTC));
         } else if (status == Turn.TurnStatus.CANCELLED) {
-            turn.setCancelledAt(java.time.LocalDateTime.now());
+            turn.setCancelledAt(java.time.OffsetDateTime.now(java.time.ZoneOffset.UTC));
         }
 
         Turn updatedTurn = turnRepository.save(turn);
@@ -122,7 +122,7 @@ public class TurnService {
         }
 
         turn.setStatus(Turn.TurnStatus.CANCELLED);
-        turn.setCancelledAt(java.time.LocalDateTime.now());
+        turn.setCancelledAt(java.time.OffsetDateTime.now(java.time.ZoneOffset.UTC));
         turnRepository.save(turn);
 
         recalculatePositions(turn.getEstablishment().getId());
