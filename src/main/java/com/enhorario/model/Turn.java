@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Entity
@@ -47,23 +47,23 @@ public class Turn {
     private Integer queuePosition;
 
     @Column(nullable = false, updatable = false)
-    private LocalDateTime requestedAt;
+    private OffsetDateTime requestedAt;
 
     @Column(name = "called_at")
-    private LocalDateTime calledAt;
+    private OffsetDateTime calledAt;
 
     @Column(name = "attended_at")
-    private LocalDateTime attendedAt;
+    private OffsetDateTime attendedAt;
 
     @Column(name = "cancelled_at")
-    private LocalDateTime cancelledAt;
+    private OffsetDateTime cancelledAt;
 
     @Column(name = "estimated_attention_at")
-    private LocalDateTime estimatedAttentionAt;
+    private OffsetDateTime estimatedAttentionAt;
 
     @PrePersist
     protected void onCreate() {
-        requestedAt = LocalDateTime.now();
+        requestedAt = OffsetDateTime.now();
     }
 
     public enum TurnType {

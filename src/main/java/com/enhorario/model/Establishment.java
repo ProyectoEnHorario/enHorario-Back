@@ -5,8 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
 import java.time.LocalTime;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Entity
@@ -27,8 +28,8 @@ public class Establishment {
     @Column(nullable = false, length = 160)
     private String name;
 
-    @Column(name = "rating_avg")
-    private Double ratingAvg;
+    @Column(name = "rating_avg", precision = 2, scale = 1)
+    private BigDecimal ratingAvg;
 
     @Column(name = "rating_count")
     private Integer ratingCount;
@@ -55,11 +56,11 @@ public class Establishment {
     @Column(length = 80)
     private String country;
 
-    @Column
-    private Double latitude;
+    @Column(precision = 9, scale = 6)
+    private BigDecimal latitude;
 
-    @Column
-    private Double longitude;
+    @Column(precision = 9, scale = 6)
+    private BigDecimal longitude;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -109,25 +110,25 @@ public class Establishment {
     private User createdByUser;
 
     @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    private OffsetDateTime createdAt;
 
     @Column(nullable = false)
-    private LocalDateTime updatedAt;
+    private OffsetDateTime updatedAt;
 
     @PrePersist
     protected void onCreate() {
-        createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
+        createdAt = OffsetDateTime.now();
+        updatedAt = OffsetDateTime.now();
         isActive = true;
         isVerified = false;
-        ratingAvg = 0.0;
+        ratingAvg = BigDecimal.ZERO;
         ratingCount = 0;
         averageWaitMinutes = 0;
     }
 
     @PreUpdate
     protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
+        updatedAt = OffsetDateTime.now();
     }
 
     public enum EstablishmentStatus {
