@@ -12,6 +12,8 @@ FROM eclipse-temurin:17-jre-alpine
 
 WORKDIR /app
 
+RUN mkdir -p /app/uploads
+
 COPY --from=builder /app/target/*.jar app.jar
 
 EXPOSE 8080
@@ -21,6 +23,7 @@ ENV DATABASE_URL=jdbc:postgresql://postgres:5432/enhorario \
     DB_PASSWORD=postgres \
     PORT=8080 \
     SERVER_PORT=8080 \
+    UPLOAD_DIR=/app/uploads \
     JWT_SECRET=your-secret-key-change-in-production
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
