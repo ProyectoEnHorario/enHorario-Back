@@ -17,12 +17,15 @@ services:
     build: .
     image: enhorario-back:profile-update-v1
     container_name: enhorario_backend
+    volumes:
+      - ./uploads:/app/uploads
     environment:
       DATABASE_URL: jdbc:postgresql://postgres:5432/enhorario
       DB_USERNAME: postgres
       DB_PASSWORD: postgres
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SERVER_PORT: 8080
+      UPLOAD_DIR: /app/uploads
       JWT_SECRET: your-secret-key-change-in-production-min-256-bits
     ports:
       - "8080:8080"
