@@ -3,6 +3,7 @@ package com.enhorario.service;
 import com.enhorario.dto.LoginRequestDTO;
 import com.enhorario.dto.LoginResponseDTO;
 import com.enhorario.dto.RegisterRequestDTO;
+import com.enhorario.dto.UpdateProfileRequestDTO;
 import com.enhorario.dto.UserDTO;
 import com.enhorario.model.User;
 import com.enhorario.repository.UserRepository;
@@ -60,6 +61,27 @@ public class AuthService {
             throw new RuntimeException("Usuario no encontrado");
         }
         return mapUserToDTO(user.get());
+    }
+
+    public UserDTO updateCurrentUser(String email, UpdateProfileRequestDTO request) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        if (request.getName() != null && !request.getName().trim().isEmpty()) {
+            user.setName(request.getName().trim());
+        }
+        if (request.getLastName() != null && !request.getLastName().trim().isEmpty()) {
+            user.setLastName(request.getLastName().trim());
+        }
+        if (request.getPhone() != null && !request.getPhone().trim().isEmpty()) {
+            user.setPhone(request.getPhone().trim());
+        }
+        if (request.getProfilePhotoUrl() != null && !request.getProfilePhotoUrl().trim().isEmpty()) {
+            user.setProfilePhotoUrl(request.getProfilePhotoUrl().trim());
+        }
+
+        User updatedUser = userRepository.save(user);
+        return mapUserToDTO(updatedUser);
     }
 
     private UserDTO mapUserToDTO(User user) {
