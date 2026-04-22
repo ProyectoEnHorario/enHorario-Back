@@ -74,8 +74,8 @@ public class EstablishmentService {
         }
 
         establishment.setAverageWaitMinutes(updatedAverage);
-        Establishment savedEstablishment = establishmentRepository.save(establishment);
-        return mapToDTO(savedEstablishment);
+        establishmentRepository.save(establishment);
+        return getEstablishmentById(establishmentId);
     }
 
     private EstablishmentDTO mapToDTO(Establishment establishment) {
