@@ -58,7 +58,7 @@ public class EstablishmentService {
     }
 
     @Transactional
-    public EstablishmentDTO reportWaitTime(UUID establishmentId, int reportedMinutes) {
+    public void reportWaitTime(UUID establishmentId, int reportedMinutes) {
         Establishment establishment = establishmentRepository.findById(establishmentId)
                 .orElseThrow(() -> new NoSuchElementException("Establecimiento no encontrado"));
 
@@ -75,7 +75,6 @@ public class EstablishmentService {
 
         establishment.setAverageWaitMinutes(updatedAverage);
         establishmentRepository.save(establishment);
-        return getEstablishmentById(establishmentId);
     }
 
     private EstablishmentDTO mapToDTO(Establishment establishment) {
