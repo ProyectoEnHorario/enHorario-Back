@@ -1,12 +1,15 @@
 package com.enhorario.controller;
 
 import com.enhorario.dto.EstablishmentDTO;
+import com.enhorario.dto.ReportWaitTimeRequestDTO;
 import com.enhorario.service.EstablishmentService;
 import lombok.RequiredArgsConstructor;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/establishments")
@@ -51,5 +54,22 @@ public class EstablishmentController {
     @GetMapping("/trending/shortest-wait")
     public ResponseEntity<List<EstablishmentDTO>> getTrendingEstablishments() {
         return ResponseEntity.ok(establishmentService.getEstablishmentsWithShortestWaitTimes());
+    }
+
+    @PostMapping("/{id}/wait-time")
+    public ResponseEntity<EstablishmentDTO> reportWaitTime(
+            @PathVariable String id,
+            @RequestBody @Valid ReportWaitTimeRequestDTO request) {
+        try {
+            return ResponseEntity.ok(
+                    establishmentService.reportWaitTime(java.util.UUID.fromString(id), request.getMinutes())
+            );
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }
