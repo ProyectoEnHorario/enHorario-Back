@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 @RestController
@@ -61,7 +62,7 @@ public class EstablishmentController {
     }
 
     @PostMapping("/{id}/wait-time")
-    public ResponseEntity<Void> reportWaitTime(
+    public ResponseEntity<?> reportWaitTime(
             @PathVariable String id,
             @RequestBody @Valid ReportWaitTimeRequestDTO request) {
         try {
@@ -73,7 +74,11 @@ public class EstablishmentController {
             return ResponseEntity.notFound().build();
         } catch (Exception e) {
             log.error("Error inesperado al reportar wait-time para establecimiento {}", id, e);
-            return ResponseEntity.internalServerError().build();
+            return ResponseEntity.internalServerError()
+                    .body(Map.of(
+                            "error", e.getClass().getSimpleName(),
+                            "message", e.getMessage() != null ? e.getMessage() : "Error inesperado"
+                    ));
         }
     }
 }
