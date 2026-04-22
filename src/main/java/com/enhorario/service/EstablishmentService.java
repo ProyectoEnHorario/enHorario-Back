@@ -8,7 +8,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalTime;
+import java.util.NoSuchElementException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -53,6 +55,27 @@ public class EstablishmentService {
                 .limit(10)
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public EstablishmentDTO reportWaitTime(UUID establishmentId, int reportedMinutes) {
+        Establishment establishment = establishmentRepository.findById(establishmentId)
+                .orElseThrow(() -> new NoSuchElementException("Establecimiento no encontrado"));
+
+        int sanitizedMinutes = Math.max(1, reportedMinutes);
+        Integer currentAverage = establishment.getAverageWaitMinutes();
+        int updatedAverage;
+
+        if (currentAverage == null || currentAverage <= 0) {
+            updatedAverage = sanitizedMinutes;
+        } else {
+            double smoothedAverage = (currentAverage * 0.7) + (sanitizedMinutes * 0.3);
+            updatedAverage = Math.max(1, (int) Math.round(smoothedAverage));
+        }
+
+        establishment.setAverageWaitMinutes(updatedAverage);
+        Establishment savedEstablishment = establishmentRepository.save(establishment);
+        return mapToDTO(savedEstablishment);
     }
 
     private EstablishmentDTO mapToDTO(Establishment establishment) {
