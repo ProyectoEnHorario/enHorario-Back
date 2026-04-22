@@ -5,6 +5,8 @@ import com.enhorario.dto.ReportWaitTimeRequestDTO;
 import com.enhorario.service.EstablishmentService;
 import lombok.RequiredArgsConstructor;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,8 @@ import java.util.NoSuchElementException;
 @RequestMapping("/establishments")
 @RequiredArgsConstructor
 public class EstablishmentController {
+
+    private static final Logger log = LoggerFactory.getLogger(EstablishmentController.class);
 
     private final EstablishmentService establishmentService;
 
@@ -69,7 +73,8 @@ public class EstablishmentController {
         } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
         } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
+            log.error("Error inesperado al reportar wait-time para establecimiento {}", id, e);
+            return ResponseEntity.internalServerError().build();
         }
     }
 }
