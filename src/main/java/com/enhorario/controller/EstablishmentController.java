@@ -61,13 +61,12 @@ public class EstablishmentController {
     }
 
     @PostMapping("/{id}/wait-time")
-    public ResponseEntity<EstablishmentDTO> reportWaitTime(
+    public ResponseEntity<Void> reportWaitTime(
             @PathVariable String id,
             @RequestBody @Valid ReportWaitTimeRequestDTO request) {
         try {
-            return ResponseEntity.ok(
-                    establishmentService.reportWaitTime(java.util.UUID.fromString(id), request.getMinutes())
-            );
+            establishmentService.reportWaitTime(java.util.UUID.fromString(id), request.getMinutes());
+            return ResponseEntity.noContent().build();
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
         } catch (NoSuchElementException e) {
