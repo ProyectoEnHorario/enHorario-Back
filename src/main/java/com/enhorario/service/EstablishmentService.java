@@ -73,8 +73,7 @@ public class EstablishmentService {
             updatedAverage = Math.max(1, (int) Math.round(smoothedAverage));
         }
 
-        establishment.setAverageWaitMinutes(updatedAverage);
-        establishmentRepository.save(establishment);
+        establishmentRepository.updateAverageWaitMinutes(establishmentId, updatedAverage);
     }
 
     private EstablishmentDTO mapToDTO(Establishment establishment) {
