@@ -1,6 +1,7 @@
 package com.enhorario.controller;
 
 import com.enhorario.dto.EstablishmentDTO;
+import com.enhorario.dto.RateWaitTimeRequestDTO;
 import com.enhorario.dto.ReportWaitTimeRequestDTO;
 import com.enhorario.service.EstablishmentService;
 import lombok.RequiredArgsConstructor;
@@ -74,6 +75,27 @@ public class EstablishmentController {
             return ResponseEntity.notFound().build();
         } catch (Exception e) {
             log.error("Error inesperado al reportar wait-time para establecimiento {}", id, e);
+            return ResponseEntity.internalServerError()
+                    .body(Map.of(
+                            "error", e.getClass().getSimpleName(),
+                            "message", e.getMessage() != null ? e.getMessage() : "Error inesperado"
+                    ));
+        }
+    }
+
+    @PostMapping("/{id}/wait-time/rating")
+    public ResponseEntity<?> rateWaitTime(
+            @PathVariable String id,
+            @RequestBody @Valid RateWaitTimeRequestDTO request) {
+        try {
+            establishmentService.rateWaitTime(java.util.UUID.fromString(id), request.getRating());
+            return ResponseEntity.noContent().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            log.error("Error inesperado al calificar wait-time para establecimiento {}", id, e);
             return ResponseEntity.internalServerError()
                     .body(Map.of(
                             "error", e.getClass().getSimpleName(),
