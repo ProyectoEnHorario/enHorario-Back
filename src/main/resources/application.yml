@@ -1,6 +1,10 @@
 spring:
   application:
     name: enhorario-backend
+
+  sql:
+    init:
+      mode: always
   
   jpa:
     hibernate:

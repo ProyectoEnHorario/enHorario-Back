@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,5 +33,5 @@ public interface EstablishmentRepository extends JpaRepository<Establishment, UU
 
     @Modifying
     @Query(value = "UPDATE establishments SET average_wait_time_rating = :rating, updated_at = CURRENT_TIMESTAMP WHERE id = :id", nativeQuery = true)
-    int rateWaitTime(@Param("id") UUID id, @Param("rating") double rating);
+    int rateWaitTime(@Param("id") UUID id, @Param("rating") BigDecimal rating);
 }
