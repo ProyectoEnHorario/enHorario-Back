@@ -29,4 +29,8 @@ public interface EstablishmentRepository extends JpaRepository<Establishment, UU
     @Modifying
     @Query(value = "UPDATE establishments SET average_wait_minutes = :minutes, updated_at = CURRENT_TIMESTAMP WHERE id = :id", nativeQuery = true)
     int updateAverageWaitMinutes(@Param("id") UUID id, @Param("minutes") int minutes);
+
+    @Modifying
+    @Query(value = "UPDATE establishments SET average_wait_time_rating = :rating, updated_at = CURRENT_TIMESTAMP WHERE id = :id", nativeQuery = true)
+    int rateWaitTime(@Param("id") UUID id, @Param("rating") double rating);
 }

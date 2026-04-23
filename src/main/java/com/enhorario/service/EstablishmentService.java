@@ -76,6 +76,24 @@ public class EstablishmentService {
         establishmentRepository.updateAverageWaitMinutes(establishmentId, updatedAverage);
     }
 
+    @Transactional
+    public void rateWaitTime(UUID establishmentId, int userRating) {
+        Establishment establishment = establishmentRepository.findById(establishmentId)
+                .orElseThrow(() -> new NoSuchElementException("Establecimiento no encontrado"));
+
+        Double currentRating = establishment.getAverageWaitTimeRating();
+        double updatedRating;
+
+        if (currentRating == null || currentRating <= 0) {
+            updatedRating = userRating;
+        } else {
+            double smoothedRating = (currentRating * 0.7) + (userRating * 0.3);
+            updatedRating = Math.round(smoothedRating * 10.0) / 10.0;
+        }
+
+        establishmentRepository.rateWaitTime(establishmentId, updatedRating);
+    }
+
     private EstablishmentDTO mapToDTO(Establishment establishment) {
         return EstablishmentDTO.builder()
                 .id(establishment.getId().toString())

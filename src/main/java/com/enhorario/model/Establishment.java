@@ -90,6 +90,9 @@ public class Establishment {
     @Column(name = "average_wait_minutes")
     private Integer averageWaitMinutes;
 
+    @Column(name = "average_wait_time_rating", precision = 2, scale = 1)
+    private Double averageWaitTimeRating;
+
     @Column(name = "peak_hour_start")
     private LocalTime peakHourStart;
 
@@ -124,6 +127,7 @@ public class Establishment {
         ratingAvg = BigDecimal.ZERO;
         ratingCount = 0;
         averageWaitMinutes = 0;
+        averageWaitTimeRating = 0.0;
     }
 
     @PreUpdate
