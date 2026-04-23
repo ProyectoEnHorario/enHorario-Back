@@ -9,6 +9,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalTime;
 import java.util.NoSuchElementException;
 import java.util.List;
@@ -81,14 +83,16 @@ public class EstablishmentService {
         Establishment establishment = establishmentRepository.findById(establishmentId)
                 .orElseThrow(() -> new NoSuchElementException("Establecimiento no encontrado"));
 
-        Double currentRating = establishment.getAverageWaitTimeRating();
-        double updatedRating;
+        int sanitizedRating = Math.max(1, Math.min(5, userRating));
+        BigDecimal currentRating = establishment.getAverageWaitTimeRating();
+        BigDecimal updatedRating;
 
-        if (currentRating == null || currentRating <= 0) {
-            updatedRating = userRating;
+        if (currentRating == null || currentRating.compareTo(BigDecimal.ZERO) <= 0) {
+            updatedRating = BigDecimal.valueOf(sanitizedRating).setScale(1, RoundingMode.HALF_UP);
         } else {
-            double smoothedRating = (currentRating * 0.7) + (userRating * 0.3);
-            updatedRating = Math.round(smoothedRating * 10.0) / 10.0;
+            BigDecimal weightedCurrent = currentRating.multiply(BigDecimal.valueOf(0.7));
+            BigDecimal weightedNew = BigDecimal.valueOf(sanitizedRating).multiply(BigDecimal.valueOf(0.3));
+            updatedRating = weightedCurrent.add(weightedNew).setScale(1, RoundingMode.HALF_UP);
         }
 
         establishmentRepository.rateWaitTime(establishmentId, updatedRating);
