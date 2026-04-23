@@ -58,6 +58,15 @@ public class User {
 
     private OffsetDateTime deletedAt;
 
+    @Column(name = "password_reset_token", unique = true, length = 120)
+    private String passwordResetToken;
+
+    @Column(name = "password_reset_token_expires_at")
+    private OffsetDateTime passwordResetTokenExpiresAt;
+
+    @Column(name = "password_reset_token_used_at")
+    private OffsetDateTime passwordResetTokenUsedAt;
+
     @PrePersist
     protected void onCreate() {
         createdAt = OffsetDateTime.now();

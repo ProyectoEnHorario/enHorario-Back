@@ -5,6 +5,10 @@ spring:
   sql:
     init:
       mode: always
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
   
   jpa:
     hibernate:
@@ -25,6 +29,9 @@ spring:
     serialization:
       write-dates-as-timestamps: false
     default-property-inclusion: non_null
+
+app:
+  upload-dir: ${UPLOAD_DIR:./uploads}
 
 server:
   port: ${PORT:${SERVER_PORT:8080}}
