@@ -37,28 +37,6 @@ public class TurnController {
         }
     }
 
-    // ENH-373: Obtener turnos activos del usuario
-    @GetMapping("/my-turns/active")
-    public ResponseEntity<List<TurnDTO>> getActiveUserTurns(@RequestHeader("Authorization") String authHeader) {
-        try {
-            String userId = extractUserIdFromToken(authHeader);
-            return ResponseEntity.ok(turnService.getActiveUserTurns(userId));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
-    // ENH-373: Obtener historial de turnos del usuario
-    @GetMapping("/my-turns/history")
-    public ResponseEntity<List<TurnDTO>> getUserTurnsHistory(@RequestHeader("Authorization") String authHeader) {
-        try {
-            String userId = extractUserIdFromToken(authHeader);
-            return ResponseEntity.ok(turnService.getUserTurnsHistory(userId));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
     @GetMapping("/establishment/{establishmentId}")
     public ResponseEntity<List<TurnDTO>> getEstablishmentTurns(@PathVariable String establishmentId) {
         try {

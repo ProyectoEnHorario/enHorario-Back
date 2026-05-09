@@ -71,24 +71,6 @@ public class TurnService {
                 .collect(Collectors.toList());
     }
 
-    // ENH-373: Obtener turnos activos del usuario
-    public List<TurnDTO> getActiveUserTurns(String userId) {
-        UUID userUUID = UUID.fromString(userId);
-        return turnRepository.findActiveUserTurns(userUUID)
-                .stream()
-                .map(this::mapToDTO)
-                .collect(Collectors.toList());
-    }
-
-    // ENH-373: Obtener historial de turnos del usuario
-    public List<TurnDTO> getUserTurnsHistory(String userId) {
-        UUID userUUID = UUID.fromString(userId);
-        return turnRepository.findUserTurnsHistory(userUUID)
-                .stream()
-                .map(this::mapToDTO)
-                .collect(Collectors.toList());
-    }
-
     public List<TurnDTO> getEstablishmentTurns(String establishmentId) {
         UUID establishmentUUID = UUID.fromString(establishmentId);
         return turnRepository.findByEstablishmentIdAndStatusOrderByQueuePosition(
