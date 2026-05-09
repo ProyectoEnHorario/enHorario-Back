@@ -24,12 +24,12 @@ public interface TurnRepository extends JpaRepository<Turn, UUID> {
     @Query("SELECT COUNT(t) FROM Turn t WHERE t.establishment.id = :establishmentId " +
            "AND t.status = 'WAITING' AND t.turnType = 'REGULAR'")
     Integer countRegularWaitingTurns(@Param("establishmentId") UUID establishmentId);
-    
-    // ENH-373: Métodos para filtrar turnos activos e historial
+
+    // ENH-373: Métodos para filtrar turnos activos e historial por usuario
     @Query("SELECT t FROM Turn t WHERE t.user.id = :userId AND t.status = 'WAITING' " +
            "ORDER BY t.requestedAt DESC")
     List<Turn> findActiveUserTurns(@Param("userId") UUID userId);
-    
+
     @Query("SELECT t FROM Turn t WHERE t.user.id = :userId AND t.status IN ('ATTENDED', 'CANCELLED') " +
            "ORDER BY t.requestedAt DESC")
     List<Turn> findUserTurnsHistory(@Param("userId") UUID userId);

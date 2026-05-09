@@ -71,7 +71,7 @@ public class TurnService {
                 .collect(Collectors.toList());
     }
 
-    // ENH-373: Obtener turnos activos del usuario
+    // ENH-373: devuelve los turnos activos (WAITING) del usuario
     public List<TurnDTO> getActiveUserTurns(String userId) {
         UUID userUUID = UUID.fromString(userId);
         return turnRepository.findActiveUserTurns(userUUID)
@@ -80,7 +80,7 @@ public class TurnService {
                 .collect(Collectors.toList());
     }
 
-    // ENH-373: Obtener historial de turnos del usuario
+    // ENH-373: devuelve el historial de turnos (ATTENDED, CANCELLED) del usuario
     public List<TurnDTO> getUserTurnsHistory(String userId) {
         UUID userUUID = UUID.fromString(userId);
         return turnRepository.findUserTurnsHistory(userUUID)
