@@ -16,88 +16,102 @@ public class TurnController {
     private final TurnService turnService;
 
     @PostMapping
-    public ResponseEntity<TurnDTO> createTurn(
+    public ResponseEntity<Object> createTurn(
             @RequestHeader("Authorization") String authHeader,
             @RequestBody CreateTurnRequestDTO request) {
         try {
             String userId = extractUserIdFromToken(authHeader);
             return ResponseEntity.ok(turnService.createTurn(userId, request));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(e.getMessage() != null ? e.getMessage() : "Error al crear turno");
         }
     }
 
     @GetMapping("/my-turns")
-    public ResponseEntity<List<TurnDTO>> getUserTurns(@RequestHeader("Authorization") String authHeader) {
+    public ResponseEntity<Object> getUserTurns(@RequestHeader("Authorization") String authHeader) {
         try {
             String userId = extractUserIdFromToken(authHeader);
             return ResponseEntity.ok(turnService.getUserTurns(userId));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(e.getMessage() != null ? e.getMessage() : "Error al obtener turnos");
         }
     }
 
     // ENH-373: Obtener turnos activos del usuario
     @GetMapping("/my-turns/active")
-    public ResponseEntity<List<TurnDTO>> getActiveUserTurns(@RequestHeader("Authorization") String authHeader) {
+    public ResponseEntity<Object> getActiveUserTurns(@RequestHeader("Authorization") String authHeader) {
         try {
             String userId = extractUserIdFromToken(authHeader);
             return ResponseEntity.ok(turnService.getActiveUserTurns(userId));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(e.getMessage() != null ? e.getMessage() : "Error al obtener turnos activos");
         }
     }
 
     // ENH-373: Obtener historial de turnos del usuario
     @GetMapping("/my-turns/history")
-    public ResponseEntity<List<TurnDTO>> getUserTurnsHistory(@RequestHeader("Authorization") String authHeader) {
+    public ResponseEntity<Object> getUserTurnsHistory(@RequestHeader("Authorization") String authHeader) {
         try {
             String userId = extractUserIdFromToken(authHeader);
             return ResponseEntity.ok(turnService.getUserTurnsHistory(userId));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(e.getMessage() != null ? e.getMessage() : "Error al obtener historial de turnos");
         }
     }
 
     @GetMapping("/establishment/{establishmentId}")
-    public ResponseEntity<List<TurnDTO>> getEstablishmentTurns(@PathVariable String establishmentId) {
+    public ResponseEntity<Object> getEstablishmentTurns(@PathVariable String establishmentId) {
         try {
             return ResponseEntity.ok(turnService.getEstablishmentTurns(establishmentId));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(e.getMessage() != null ? e.getMessage() : "Error al obtener turnos de establecimiento");
         }
     }
 
     @GetMapping("/{turnId}")
-    public ResponseEntity<TurnDTO> getTurnById(@PathVariable String turnId) {
+    public ResponseEntity<Object> getTurnById(@PathVariable String turnId) {
         try {
             return ResponseEntity.ok(turnService.getTurnById(turnId));
         } catch (Exception e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(404).body(e.getMessage() != null ? e.getMessage() : "Turno no encontrado");
         }
     }
 
     @PutMapping("/{turnId}/status")
-    public ResponseEntity<TurnDTO> updateTurnStatus(
+    public ResponseEntity<Object> updateTurnStatus(
             @PathVariable String turnId,
             @RequestParam String status) {
         try {
             return ResponseEntity.ok(turnService.updateTurnStatus(turnId, status));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(e.getMessage() != null ? e.getMessage() : "Error al actualizar estado");
         }
     }
 
     @DeleteMapping("/{turnId}/cancel")
-    public ResponseEntity<Void> cancelTurn(
+    public ResponseEntity<Object> cancelTurn(
             @PathVariable String turnId,
             @RequestHeader("Authorization") String authHeader) {
         try {
             String userId = extractUserIdFromToken(authHeader);
             turnService.cancelTurn(turnId, userId);
             return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(e.getMessage() != null ? e.getMessage() : "Error al cancelar turno");
         }
     }
 
