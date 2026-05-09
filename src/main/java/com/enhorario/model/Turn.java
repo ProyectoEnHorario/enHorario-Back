@@ -40,7 +40,7 @@ public class Turn {
     private TurnType turnType;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "status", nullable = false, columnDefinition = "VARCHAR(20)")
     private TurnStatus status;
 
     @Column(name = "queue_position")
@@ -65,9 +65,9 @@ public class Turn {
     protected void onCreate() {
         requestedAt = OffsetDateTime.now();
     }
-
-    public enum TurnType {
-        REGULAR, PRIORITY
+        @Enumerated(EnumType.STRING)
+        @Column(name = "turn_type", nullable = false, columnDefinition = "VARCHAR(20)")
+        private TurnType turnType;
     }
 
     public enum TurnStatus {
