@@ -65,12 +65,12 @@ public class Turn {
     protected void onCreate() {
         requestedAt = OffsetDateTime.now();
     }
-        @Enumerated(EnumType.STRING)
-        @Column(name = "turn_type", nullable = false, columnDefinition = "VARCHAR(20)")
-        private TurnType turnType;
-    }
 
     public enum TurnStatus {
         WAITING, CALLED, ATTENDED, CANCELLED, EXPIRED
+    }
+
+    public enum TurnType {
+        REGULAR, PRIORITY
     }
 }
