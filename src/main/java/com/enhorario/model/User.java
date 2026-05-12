@@ -80,6 +80,6 @@ public class User {
     }
 
     public enum UserRole {
-        ADMIN, USER
+        SUPERADMIN, ADMIN, ADMIN_LOCAL, USER
     }
 }
